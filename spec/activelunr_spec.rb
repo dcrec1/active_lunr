@@ -17,7 +17,7 @@ def documents_url
 end
 
 def documents_json
- '[{"highlight":"marilyn","attributes":{"name":"Marilyn","lastname":"Monroe"},"id":"1312"},{"highlight":"adriana","attributes":{"name":"Adriana","lastname":"Lima"},"id":"1212"}]'
+ '[{"highlight":"marilyn","attributes":{"name":"Marilyn","lastname":"Monroe","_type":"Advertise"},"id":"1312"},{"highlight":"adriana","attributes":{"name":"Adriana","lastname":"Lima","_type":"Advertise"},"id":"1212"}]'
 end
 
 describe ActiveLunr do

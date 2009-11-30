@@ -22,7 +22,9 @@ module ActiveLunr
     def search(params)
       query = URI.encode("_type:#{self} AND #{params}")
       Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}/search?q=#{query}")).map do |document|
-        new document['attributes']
+        attributes = document['attributes']
+        attributes.delete '_type'
+        new attributes
       end
     end
   end
