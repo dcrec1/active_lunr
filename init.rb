@@ -1,1 +1,3 @@
-# Include hook code here
+require 'rest_client'
+
+require 'activelunr'

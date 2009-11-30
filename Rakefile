@@ -1,23 +1,48 @@
+require 'rubygems'
+require 'rubygems/specification'
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+require 'rake/gempackagetask'
+require 'spec/rake/spectask'
+ 
+GEM = "activelunr"
+GEM_VERSION = "0.1.0"
+SUMMARY = "Rails plugin for Lunr"
+AUTHOR = "Diego Carrion"
+EMAIL = "dc.rec1@gmail.com"
+HOMEPAGE = "http://www.diegocarrion.com"
+ 
+spec = Gem::Specification.new do |s|
+  s.name = GEM
+  s.version = GEM_VERSION
+  s.platform = Gem::Platform::RUBY
+  s.summary = SUMMARY
+  s.require_paths = ['lib']
+  s.files = FileList['lib/**/*.rb', '[A-Z]*'].to_a
+  
+  s.author = AUTHOR
+  s.email = EMAIL
+  s.homepage = HOMEPAGE
 
-desc 'Default: run unit tests.'
-task :default => :test
-
-desc 'Test the activelunr plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.libs << 'test'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+  s.rubyforge_project = GEM # GitHub bug, gem isn't being build when this miss
 end
 
-desc 'Generate documentation for the activelunr plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Activelunr'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+Spec::Rake::SpecTask.new do |t|
+  t.spec_files = FileList['spec/**/*_spec.rb']
+  t.spec_opts = %w(-fs --color)
+end
+  
+Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.gem_spec = spec
+end
+ 
+desc "Install the gem locally"
+task :install => [:package] do
+  sh %{sudo gem install pkg/#{GEM}-#{GEM_VERSION}}
+end
+ 
+desc "Create a gemspec file"
+task :make_spec do
+  File.open("#{GEM}.gemspec", "w") do |file|
+    file.puts spec.to_ruby
+  end
 end

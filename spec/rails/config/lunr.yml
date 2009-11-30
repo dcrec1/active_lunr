@@ -1,0 +1,5 @@
+development: http://localhost:3000
+
+test: http://host:1234/context
+  
+production: http://mouseoverstudio.com/lunr
