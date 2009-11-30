@@ -4,32 +4,43 @@ class Advertise < ActiveRecord::Base
   include ActiveLunr
 end
 
-def stub_post
-  RestClient.stub!(:post)
+def stub_http(verb)
+  RestClient.stub!(verb)
 end
 
-def expect_post_with(*params)
-  RestClient.should_receive(:post).with(*params)
+def expect_http(verb)
+  RestClient.should_receive(verb)
 end
 
-def expect_put_with(*params)
-  RestClient.should_receive(:put).with(*params)
+def documents_url
+  "http://host:1234/context/documents"
+end
+
+def documents_json
+ '[{"highlight":"marilyn","attributes":{"name":"Marilyn","lastname":"Monroe"},"id":"1312"},{"highlight":"adriana","attributes":{"name":"Adriana","lastname":"Lima"},"id":"1212"}]'
 end
 
 describe ActiveLunr do
   context "on create" do
     it "should create a document in the Lunr server" do
-      expect_post_with("http://host:1234/context/documents", :document => {'name' => "Tito", 'lastname' => "Ortiz", '_type' => 'Advertise', 'id' => 1})
+      expect_http(:post).with(documents_url, :document => {'name' => "Tito", 'lastname' => "Ortiz", '_type' => 'Advertise', 'id' => 1})
       Advertise.create! :name => "Tito", :lastname => "Ortiz"
     end
   end
   
   context "on update" do
     it "should update a document in the Lunr server" do
-      stub_post
+      stub_http :post
       advertise = Advertise.create! :name => "Vanderlei"
-      expect_put_with("http://host:1234/context/documents/#{advertise.id}", :document => {'name' => "Lyoto"})
+      expect_http(:put).with("#{documents_url}/#{advertise.id}", :document => {'name' => "Lyoto"})
       advertise.update_attributes! :name => "Lyoto"
+    end
+  end
+  
+  context "on search with an string" do
+    it "should return an array of the documents found in the Lunr server" do
+      stub_http(:get).and_return(documents_json)
+      Advertise.search("a query string").last.lastname.should eql("Lima")
     end
   end
 end

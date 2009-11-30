@@ -1,5 +1,9 @@
 module ActiveLunr
   
+  def self.included(base)
+    base.extend ClassMethods
+  end
+  
   DOCUMENTS_URL = YAML::load_file("#{RAILS_ROOT}/config/lunr.yml")[RAILS_ENV] + '/documents'
   
   def after_create
@@ -8,5 +12,13 @@ module ActiveLunr
   
   def after_update
     RestClient.put("#{DOCUMENTS_URL}/#{id}", :document => @attributes.delete_if {|key, value| value.nil? or key.eql?('id')})
+  end
+  
+  module ClassMethods
+    def search(query)
+      Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}/search")).map do |document|
+        new document['attributes']
+      end
+    end
   end
 end
