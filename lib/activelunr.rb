@@ -1,3 +1,7 @@
+require 'rest_client'
+require 'crack'
+require 'uri'
+
 module ActiveLunr
   
   def self.included(base)
@@ -15,8 +19,9 @@ module ActiveLunr
   end
   
   module ClassMethods
-    def search(query)
-      Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}/search")).map do |document|
+    def search(params)
+      query = URI.encode("_type:#{self} AND #{params}")
+      Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}/search?q=#{query}")).map do |document|
         new document['attributes']
       end
     end
