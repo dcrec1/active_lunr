@@ -1,3 +1,30 @@
+h2. ABOUT
+
+ActiveLunr is a gem/plugin to integrate your Rails application with a Lunr server through your ActiveRecord models.
+
+h2. INSTALLATION
+
+<pre><code>script/plugin install git://github.com/dcrec1/activelunr.git</code></pre>
+
+h2. CONFIGURATION
+
+Customize RAILS_ROOT/config/lunr.yml
+
+h2. USAGE
+
+Include ActiveLunr in your ActiveRecord models:
+
+<pre><code>class Advertise < ActiveRecord::Base
+  include ActiveLunr
+end</code></pre>
+
+Create some records and then search like this:
+
+<pre><code>Advertise.search "car"
+Advertise.search "sub*"
+Advertise.search "blue OR red"
+Advertise.search "name:Megan AND lastname:f?x"</code></pre>
+
 h2. LICENSE:
 
 (The MIT License)
