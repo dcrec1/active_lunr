@@ -4,6 +4,8 @@ require 'uri'
 
 module ActiveLunr
 
+  attr_accessor :highlight
+
   def self.included(base)
     base.extend ClassMethods
   end
@@ -24,7 +26,9 @@ module ActiveLunr
       Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}/search?q=#{query}")).map do |document|
         attributes = document['attributes']
         attributes.delete '_type'
-        new attributes
+        returning new attributes do |doc|
+          doc.highlight = document['highlight']
+        end
       end
     end
   end

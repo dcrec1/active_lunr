@@ -47,5 +47,10 @@ describe ActiveLunr do
       stub_http(:get).and_return(documents_json)
       Advertise.search("a query string").last.lastname.should eql("Lima")
     end
+
+    it "should return the highlight" do
+      stub_http(:get).and_return(documents_json)
+      Advertise.search("anything").first.highlight.should eql('marilyn')
+    end
   end
 end
