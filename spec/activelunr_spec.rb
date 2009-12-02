@@ -13,7 +13,7 @@ def expect_http(verb)
 end
 
 def documents_url
-  "http://host:1234/context/documents.json"
+  "http://host:1234/context/documents"
 end
 
 def documents_json
@@ -23,7 +23,7 @@ end
 describe ActiveLunr do
   context "on create" do
     it "should create a document in the Lunr server" do
-      expect_http(:post).with(documents_url, :document => {'name' => "Tito", 'lastname' => "Ortiz", '_type' => 'Advertise', 'id' => 1})
+      expect_http(:post).with("#{documents_url}.json", :document => {'name' => "Tito", 'lastname' => "Ortiz", '_type' => 'Advertise', 'id' => 1})
       Advertise.create! :name => "Tito", :lastname => "Ortiz"
     end
   end
@@ -32,7 +32,7 @@ describe ActiveLunr do
     it "should update a document in the Lunr server" do
       stub_http :post
       advertise = Advertise.create! :name => "Vanderlei"
-      expect_http(:put).with("#{documents_url}/#{advertise.id}", :document => {'name' => "Lyoto"})
+      expect_http(:put).with("#{documents_url}/#{advertise.id}.json", :document => {'name' => "Lyoto"})
       advertise.update_attributes! :name => "Lyoto"
     end
   end
