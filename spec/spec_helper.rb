@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'activerecord'
+require 'active_support'
 
 require 'ruby-debug'
 
@@ -16,8 +16,16 @@ def expect_http(verb)
   RestClient.should_receive(verb)
 end
 
+def root_url
+  "http://host:1234/context"
+end
+
 def documents_url
-  "http://host:1234/context/documents"
+  "#{root_url}/documents"
+end
+
+def document_json
+  '{"highlight":"","attributes":{"name":"Marilyn","lastname":"Monroe","_type":"Advertise"},"id":"1312"}'
 end
 
 def documents_json
