@@ -1,7 +1,3 @@
-require 'rest_client'
-require 'crack'
-require 'uri'
-
 module ActiveLunr
 
   attr_accessor :highlight

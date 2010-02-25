@@ -1,23 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-class Advertise < ActiveRecord::Base
+class Advertise
   include ActiveLunr
-end
-
-def stub_http(verb)
-  RestClient.stub!(verb)
-end
-
-def expect_http(verb)
-  RestClient.should_receive(verb)
-end
-
-def documents_url
-  "http://host:1234/context/documents"
-end
-
-def documents_json
- '[{"highlight":"marilyn","attributes":{"name":"Marilyn","lastname":"Monroe","_type":"Advertise"},"id":"1312"},{"highlight":"adriana","attributes":{"name":"Adriana","lastname":"Lima","_type":"Advertise"},"id":"1212"}]'
 end
 
 describe ActiveLunr do

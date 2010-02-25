@@ -1,8 +1,12 @@
 h2. ABOUT
 
-ActiveLunr is a gem/plugin to integrate your Rails application with a Lunr server through your ActiveRecord models.
+ActiveLunr is a gem/plugin to integrate Rails with a Lunr server through your model.
 
 h2. INSTALLATION
+
+<pre><code>gem install active_lunr</code></pre>
+
+or
 
 <pre><code>script/plugin install git://github.com/dcrec1/activelunr.git</code></pre>
 
@@ -12,9 +16,9 @@ Customize RAILS_ROOT/config/lunr.yml
 
 h2. USAGE
 
-Include ActiveLunr in your ActiveRecord models:
+Include ActiveLunr in your models:
 
-<pre><code>class Advertise < ActiveRecord::Base
+<pre><code>class Advertise
   include ActiveLunr
 end</code></pre>
 
@@ -29,7 +33,7 @@ h2. LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 MouseOver Studio
+Copyright (c) 2010 MouseOver Studio
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
