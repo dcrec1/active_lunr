@@ -52,5 +52,7 @@ module ActiveLunr
         end
       end
     end
+
+    def quoted_table_name; end
   end
 end

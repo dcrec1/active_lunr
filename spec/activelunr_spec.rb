@@ -41,4 +41,8 @@ describe ActiveLunr do
   it "should be intialized without params" do
     lambda { Advertise.new }.should_not raise_error
   end
+
+  it "should respond to quoted_table_name" do
+    lambda { Advertise.quoted_table_name }.should_not raise_error
+  end
 end
