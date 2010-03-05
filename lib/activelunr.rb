@@ -53,6 +53,11 @@ module ActiveLunr
       end
     end
 
+    def paginate(params)
+      Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}.json?page=#{params[:page]}")).map do |document|
+      end
+    end
+
     def quoted_table_name; end
   end
 end

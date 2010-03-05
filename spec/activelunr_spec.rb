@@ -45,4 +45,9 @@ describe ActiveLunr do
   it "should respond to quoted_table_name" do
     lambda { Advertise.quoted_table_name }.should_not raise_error
   end
+
+  it "should paginate the documents" do
+    expect_http(:get).with("#{root_url}/documents.json?page=5").and_return(documents_json)
+    Advertise.paginate(:page => 5)
+  end
 end
