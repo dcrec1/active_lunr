@@ -8,7 +8,7 @@ module ActiveLunr
     base.extend ClassMethods
   end
 
-  def initialize(params)
+  def initialize(params = {})
     @attributes = params.stringify_keys
   end
 

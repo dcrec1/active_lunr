@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'activesupport'
 require 'active_support'
 
 require 'ruby-debug'

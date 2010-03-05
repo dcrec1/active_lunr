@@ -37,4 +37,8 @@ describe ActiveLunr do
       Advertise.search("anything").first.highlight.should eql('marilyn')
     end
   end
+
+  it "should be intialized without params" do
+    lambda { Advertise.new }.should_not raise_error
+  end
 end
