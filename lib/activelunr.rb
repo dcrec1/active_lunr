@@ -28,7 +28,7 @@ module ActiveLunr
   private
 
   def create
-    @id = RestClient.post("#{DOCUMENTS_URL}.json", :document => @attributes.merge('_type' => self.class.to_s))['id']
+    @id = RestClient.post("#{DOCUMENTS_URL}.json", :document => @attributes.merge('_type' => self.class.to_s)).to_s['id']
   end
 
   def update
@@ -44,7 +44,7 @@ module ActiveLunr
 
     def search(params)
       query = URI.encode("_type:#{self} AND #{params}")
-      Crack::JSON.parse(RestClient.get("#{ROOT_URL}/search/#{query}.json")).map do |document|
+      Crack::JSON.parse(RestClient.get("#{ROOT_URL}/search/#{query}.json").to_s).map do |document|
         attributes = document['attributes']
         attributes.delete '_type'
         returning new attributes do |doc|
@@ -54,7 +54,7 @@ module ActiveLunr
     end
 
     def paginate(params)
-      Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}.json?page=#{params[:page]}")).map do |document|
+      Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}.json?page=#{params[:page]}").to_s).map do |document|
         attributes = document['attributes']
         attributes.delete '_type'
         returning new attributes do |doc|
