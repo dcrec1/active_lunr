@@ -12,7 +12,7 @@ or
 
 h2. CONFIGURATION
 
-Customize RAILS_ROOT/config/lunr.yml
+Customize Rails.root/config/lunr.yml
 
 h2. USAGE
 
