@@ -5,6 +5,14 @@ class Advertise
 end
 
 describe ActiveLunr do
+  it "should be intialized without params" do
+    lambda { Advertise.new }.should_not raise_error
+  end
+
+  it "should respond to quoted_table_name" do
+    lambda { Advertise.quoted_table_name }.should_not raise_error
+  end
+  
   context "on create" do
     it "should create a document in the Lunr server" do
       expect_http(:post).with("#{documents_url}.json", :document => {'name' => "Tito", 'lastname' => "Ortiz", '_type' => 'Advertise'}).and_return(document_json)
@@ -43,14 +51,6 @@ describe ActiveLunr do
     end
   end
 
-  it "should be intialized without params" do
-    lambda { Advertise.new }.should_not raise_error
-  end
-
-  it "should respond to quoted_table_name" do
-    lambda { Advertise.quoted_table_name }.should_not raise_error
-  end
-
   context "on paginate" do
     it "should get documents from Lunr for the param page" do
       expect_http(:get).with("#{root_url}/documents.json?page=5").and_return(documents_json)
@@ -60,6 +60,35 @@ describe ActiveLunr do
     it "should return the paginated documents" do
       stub_http(:get).and_return(documents_json)
       Advertise.paginate(:page => 6).last.id.should eql("1313")
+    end
+  end
+  
+  context "on save?" do
+    it "should create a document if the document is new" do
+      expect_http(:post).with("#{documents_url}.json", :document => {'language' => "ruby", '_type' => 'Advertise'}).and_return(document_json)
+      Advertise.new(:language => "ruby").save?
+    end
+    
+    it "should return true" do
+      stub_http(:post).and_return(document_json)
+      Advertise.new(:language => "ruby").should be_save
+    end
+  end
+  
+  context "on update attributes" do
+    before :each do
+      stub_http(:post).and_return(document_json)
+      @advertise = Advertise.create! :name => "Vanderlei"
+    end
+    
+    it "should update a document if it already exists" do
+      expect_http(:put).with("#{documents_url}/#{@advertise.id}.json", :document => {'name' => "Rogerio"})
+      @advertise.update_attributes :name => "Rogerio"
+    end
+    
+    it "should return true" do
+      stub_http(:put)
+      @advertise.update_attributes(:name => "Rogerio").should be_true
     end
   end
 end

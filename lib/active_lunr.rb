@@ -11,9 +11,19 @@ module ActiveLunr
   def initialize(params = {})
     @attributes = params.stringify_keys
   end
+  
+  def save?
+    create
+    true
+  end
 
   def save!
     @id.nil? ? create : update
+  end
+  
+  def update_attributes(params)
+    update_attributes! params
+    true
   end
 
   def update_attributes!(params)
