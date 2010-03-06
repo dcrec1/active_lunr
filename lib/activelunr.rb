@@ -2,7 +2,7 @@ module ActiveLunr
   ROOT_URL = YAML::load_file("#{RAILS_ROOT}/config/lunr.yml")[RAILS_ENV]
   DOCUMENTS_URL =  ROOT_URL + '/documents'
 
-  attr_accessor :highlight
+  attr_accessor :highlight, :id
 
   def self.included(base)
     base.extend ClassMethods
@@ -55,6 +55,11 @@ module ActiveLunr
 
     def paginate(params)
       Crack::JSON.parse(RestClient.get("#{DOCUMENTS_URL}.json?page=#{params[:page]}")).map do |document|
+        attributes = document['attributes']
+        attributes.delete '_type'
+        returning new attributes do |doc|
+          doc.id = document['id']
+        end
       end
     end
 

@@ -23,17 +23,17 @@ describe ActiveLunr do
 
   context "on search with an string" do
     it "should search for documents in the Lunr server" do
-      expect_http(:get).with("#{root_url}/search/_type:Advertise%20AND%20do%20find%20this.json").and_return(documents_json)
+      expect_http(:get).with("#{root_url}/search/_type:Advertise%20AND%20do%20find%20this.json").and_return(search_json)
       Advertise.search("do find this")
     end
 
     it "should return an array of the documents found in the Lunr server" do
-      stub_http(:get).and_return(documents_json)
+      stub_http(:get).and_return(search_json)
       Advertise.search("a query string").last.lastname.should eql("Lima")
     end
 
     it "should return the highlight" do
-      stub_http(:get).and_return(documents_json)
+      stub_http(:get).and_return(search_json)
       Advertise.search("anything").first.highlight.should eql('marilyn')
     end
   end
@@ -46,8 +46,15 @@ describe ActiveLunr do
     lambda { Advertise.quoted_table_name }.should_not raise_error
   end
 
-  it "should paginate the documents" do
-    expect_http(:get).with("#{root_url}/documents.json?page=5").and_return(documents_json)
-    Advertise.paginate(:page => 5)
+  context "on paginate" do
+    it "should get documents from Lunr for the param page" do
+      expect_http(:get).with("#{root_url}/documents.json?page=5").and_return(documents_json)
+      Advertise.paginate(:page => 5)
+    end
+
+    it "should return the paginated documents" do
+      stub_http(:get).and_return(documents_json)
+      Advertise.paginate(:page => 6).last.id.should eql("1313")
+    end
   end
 end
