@@ -1,5 +1,5 @@
 module ActiveLunr
-  ROOT_URL = YAML::load_file("#{Rails.root}/config/lunr.yml")[RAILS_ENV]
+  ROOT_URL = YAML::load_file("#{Rails.root}/config/lunr.yml")[Rails.env]
   DOCUMENTS_URL =  ROOT_URL + '/documents'
 
   attr_accessor :highlight, :id

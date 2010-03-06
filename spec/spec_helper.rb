@@ -5,7 +5,7 @@ require 'active_support'
 require 'ruby-debug'
 
 Rails.root = File.expand_path(File.dirname(__FILE__) + "/rails")
-RAILS_ENV = 'test'
+Rails.env = 'test'
 
 require File.expand_path(File.dirname(__FILE__) + "/../init")
 
