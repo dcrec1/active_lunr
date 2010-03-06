@@ -28,7 +28,7 @@ module ActiveLunr
   private
 
   def create
-    @id = RestClient.post("#{DOCUMENTS_URL}.json", :document => @attributes.merge('_type' => self.class.to_s)).to_s['id']
+    @id = Crack::JSON.parse(RestClient.post("#{DOCUMENTS_URL}.json", :document => @attributes.merge('_type' => self.class.to_s)).to_s)['id']
   end
 
   def update
@@ -36,7 +36,7 @@ module ActiveLunr
   end
 
   module ClassMethods
-    def create!(params)
+    def create!(params = {})
       returning new(params) do |subject|
         subject.save!
       end

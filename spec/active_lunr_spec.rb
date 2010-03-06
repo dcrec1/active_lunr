@@ -10,6 +10,11 @@ describe ActiveLunr do
       expect_http(:post).with("#{documents_url}.json", :document => {'name' => "Tito", 'lastname' => "Ortiz", '_type' => 'Advertise'}).and_return(document_json)
       Advertise.create! :name => "Tito", :lastname => "Ortiz"
     end
+    
+    it "should take the generated id" do
+      stub_http(:post).and_return(document_json)
+      Advertise.create!.id.should eql('1312')
+    end
   end
 
   context "on update" do
