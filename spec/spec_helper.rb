@@ -1,11 +1,18 @@
 require 'rubygems'
-require 'activesupport'
 require 'active_support'
+require 'active_support/core_ext/hash/keys'
+require 'active_support/core_ext/object/misc'
+require 'rails'
 
-require 'ruby-debug'
+Rails.class_eval do
+  def self.root
+    File.expand_path(File.dirname(__FILE__) + "/rails")
+  end
 
-Rails.root = File.expand_path(File.dirname(__FILE__) + "/rails")
-Rails.env = 'test'
+  def self.env
+    'test'
+  end
+end
 
 require File.expand_path(File.dirname(__FILE__) + "/../init")
 
