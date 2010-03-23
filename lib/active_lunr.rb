@@ -38,7 +38,9 @@ module ActiveLunr
   private
 
   def create
-    @id = Crack::JSON.parse(RestClient.post("#{DOCUMENTS_URL}.json", :document => @attributes.merge('_type' => self.class.to_s)).to_s)['id']
+    json = Crack::JSON.parse(RestClient.post("#{DOCUMENTS_URL}.json", :document => @attributes.merge('_type' => self.class.to_s)).to_s)
+    @id = json.delete 'id'
+    @attributes = json['attributes']
   end
 
   def update

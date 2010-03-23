@@ -29,7 +29,7 @@ describe ActiveLunr do
     it "should update a document in the Lunr server" do
       stub_http(:post).and_return(document_json)
       advertise = Advertise.create! :name => "Vanderlei"
-      expect_http(:put).with("#{documents_url}/#{advertise.id}.json", :document => {'name' => "Lyoto"})
+      expect_http(:put).with("#{documents_url}/#{advertise.id}.json", :document => hash_including({'name' => "Lyoto"}))
       advertise.update_attributes! :name => "Lyoto"
     end
   end
@@ -73,6 +73,13 @@ describe ActiveLunr do
       stub_http(:post).and_return(document_json)
       Advertise.new(:language => "ruby").save.should be_true
     end
+
+    it "should update the attributes with the response" do
+      stub_http(:post).and_return(document_json)
+      advertise = Advertise.new
+      advertise.save
+      advertise.lastname.should eql("Monroe")  
+    end
   end
   
   context "on update attributes" do
@@ -82,7 +89,7 @@ describe ActiveLunr do
     end
     
     it "should update a document if it already exists" do
-      expect_http(:put).with("#{documents_url}/#{@advertise.id}.json", :document => {'name' => "Rogerio"})
+      expect_http(:put).with("#{documents_url}/#{@advertise.id}.json", :document => hash_including({'name' => "Rogerio"}))
       @advertise.update_attributes :name => "Rogerio"
     end
     
