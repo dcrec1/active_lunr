@@ -63,15 +63,15 @@ describe ActiveLunr do
     end
   end
   
-  context "on save?" do
+  context "on save" do
     it "should create a document if the document is new" do
       expect_http(:post).with("#{documents_url}.json", :document => {'language' => "ruby", '_type' => 'Advertise'}).and_return(document_json)
-      Advertise.new(:language => "ruby").save?
+      Advertise.new(:language => "ruby").save
     end
     
     it "should return true" do
       stub_http(:post).and_return(document_json)
-      Advertise.new(:language => "ruby").should be_save
+      Advertise.new(:language => "ruby").save.should be_true
     end
   end
   

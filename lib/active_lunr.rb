@@ -12,7 +12,7 @@ module ActiveLunr
     @attributes = params.stringify_keys
   end
   
-  def save?
+  def save
     create
     true
   end
