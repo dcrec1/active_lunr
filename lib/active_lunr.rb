@@ -56,7 +56,7 @@ module ActiveLunr
 
     def search(params)
       query = URI.encode("_type:#{self} AND #{params}")
-      Crack::JSON.parse(RestClient.get("#{ROOT_URL}/search/#{query}.json").to_s).map do |document|
+      Crack::JSON.parse(RestClient.get("#{ROOT_URL}/search/#{query}.json").to_s)['documents'].map do |document|
         attributes = document['attributes']
         attributes.delete '_type'
         returning new attributes do |doc|
